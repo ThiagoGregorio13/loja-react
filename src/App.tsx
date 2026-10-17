@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router";
 import { Loja } from "./pages/Loja";
 import type { Product } from "./types";
+import { Routes, Route, Link } from "react-router";
+import { Carrinho } from "./pages/Carrinho";
+import { ProdutoDetalhe } from "./pages/ProdutoDetalhe";
 
 export default function App() {
   const [carrinho, setCarrinho] = useState<Product[]>([]);
@@ -20,12 +22,15 @@ return (
       <header>
         <h1>Loja</h1>
         <p>
-          🛒 {quantidadeNoCarrinho} itens · US$ {totalDoCarrinho.toFixed(2)}
-        </p>
+<Link to="/carrinho">
+  🛒 {quantidadeNoCarrinho} itens · US$ {totalDoCarrinho.toFixed(2)}
+</Link>        </p>
       </header>
 
       <Routes>
         <Route path="/" element={<Loja aoAdicionar={adicionarAoCarrinho} />} />
+        <Route path="/carrinho" element={<Carrinho itens={carrinho} />} />
+        <Route path="/produto/:id" element={<ProdutoDetalhe aoAdicionar={adicionarAoCarrinho} />} />
       </Routes>
     </div>
   );

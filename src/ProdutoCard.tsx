@@ -1,4 +1,6 @@
 import type {Product} from "./types"
+import { Link } from "react-router";
+
 
 type ProdutoCardProps = {
     produto:Product;
@@ -9,7 +11,7 @@ type ProdutoCardProps = {
 export function ProdutoCard({produto, aoAdicionar}: ProdutoCardProps){
 return (
     <li>
-          <h3>{produto.title}</h3>
+        <Link to = {`/produto/${produto.id}`}><h3>{produto.title}</h3></Link>  
               <p>US$ {produto.price}</p>
               <p>{produto.category}</p>
               <p>Nota: {produto.rating}</p>
