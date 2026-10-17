@@ -14,6 +14,10 @@ function adicionarAoCarrinho(produto: Product) {
     setCarrinho([...carrinho, produto]);
   }
 
+  function RemoverCarrinho(posicao: number) {
+  setCarrinho(carrinho.filter((_, i) => i !== posicao))
+  }
+
   const quantidadeNoCarrinho = carrinho.length;
   const totalDoCarrinho = carrinho.reduce((acc, p) => acc + p.price, 0);
 
@@ -29,7 +33,7 @@ return (
 
       <Routes>
         <Route path="/" element={<Loja aoAdicionar={adicionarAoCarrinho} />} />
-        <Route path="/carrinho" element={<Carrinho itens={carrinho} />} />
+        <Route path="/carrinho" element={<Carrinho itens={carrinho} aoRemover={RemoverCarrinho} />} />
         <Route path="/produto/:id" element={<ProdutoDetalhe aoAdicionar={adicionarAoCarrinho} />} />
       </Routes>
     </div>
