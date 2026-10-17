@@ -41,11 +41,11 @@ export function Loja({ aoAdicionar }: LojaProp) {
 
       <ResumoLoja mostrando={visiveis.length} total={quantidade} precoMedio={precoMedio} />
 
-      {carregando && <p>Carregando...</p>}
-      {erro && <p>Erro: {erro}</p>}
+      {carregando && <p className="mensagem">Carregando...</p>}
+      {erro && <p className="mensagem">Erro: {erro}</p>}
 
       {!carregando && !erro && (
-        <ul>
+        <ul className="grade-produtos">
           {visiveis.map((p) => (
             <ProdutoCard key={p.id} produto={p} aoAdicionar={aoAdicionar} />
           ))}

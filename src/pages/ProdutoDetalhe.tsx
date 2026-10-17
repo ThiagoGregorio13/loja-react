@@ -10,23 +10,33 @@ export function ProdutoDetalhe({ aoAdicionar }: ProdutoDetalheProp) {
   const { id } = useParams();
   const { produto, carregando, erro } = useProduto(id);
 
-  if (carregando) return <p>Carregando...</p>;
-  if (erro) return <p>Erro: {erro}</p>;
-  if (!produto) return <p>Produto não encontrado</p>;
+  if (carregando) return <p className="mensagem">Carregando...</p>;
+  if (erro) return <p className="mensagem">Erro: {erro}</p>;
+  if (!produto) return <p className="mensagem">Produto não encontrado</p>;
 
   return (
     <div>
-      <Link to="/">Voltar para a loja</Link>
+      <Link to="/" className="voltar">
+        ← Voltar para a loja
+      </Link>
 
-      <img src={produto.thumbnail} alt={produto.title} />
+      <div className="detalhe-grade">
+        <div className="detalhe-imagem">
+          <img src={produto.thumbnail} alt={produto.title} />
+        </div>
 
-      <h2>{produto.title}</h2>
-      <p>{produto.description}</p>
+        <div className="detalhe-info">
+          <span className="categoria">{produto.category}</span>
+          <h2>{produto.title}</h2>
+          <p className="nota">★ {produto.rating}</p>
+          <p className="descricao">{produto.description}</p>
+          <p className="preco">US$ {produto.price}</p>
 
-      <p>US$ {produto.price}</p>
-      <p>Nota: {produto.rating}</p>
-
-      <button onClick={() => aoAdicionar(produto)}>Adicionar ao carrinho</button>
+          <button className="botao" onClick={() => aoAdicionar(produto)}>
+            Adicionar ao carrinho
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

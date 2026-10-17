@@ -23,19 +23,24 @@ function adicionarAoCarrinho(produto: Product) {
 
 return (
     <div>
-      <header>
-        <h1>Loja</h1>
-        <p>
-<Link to="/carrinho">
-  🛒 {quantidadeNoCarrinho} itens · US$ {totalDoCarrinho.toFixed(2)}
-</Link>        </p>
+      <header className="cabecalho">
+        <div className="cabecalho-conteudo">
+          <Link to="/" className="logo">
+            Minha<span>Loja</span>
+          </Link>
+          <Link to="/carrinho" className="carrinho-link">
+            🛒 {quantidadeNoCarrinho} itens · US$ {totalDoCarrinho.toFixed(2)}
+          </Link>
+        </div>
       </header>
 
+      <main className="conteudo">
       <Routes>
         <Route path="/" element={<Loja aoAdicionar={adicionarAoCarrinho} />} />
         <Route path="/carrinho" element={<Carrinho itens={carrinho} aoRemover={RemoverCarrinho} />} />
         <Route path="/produto/:id" element={<ProdutoDetalhe aoAdicionar={adicionarAoCarrinho} />} />
       </Routes>
+      </main>
     </div>
   );
   

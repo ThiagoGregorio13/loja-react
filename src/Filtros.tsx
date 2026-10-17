@@ -18,7 +18,7 @@ export function Filtros({
   aoMudarBemAvaliado,
 }: FiltrosProps) {
   return (
-    <div>
+    <div className="filtros">
       <input
         value={digitado}
         onChange={(e) => aoDigitar(e.target.value)}

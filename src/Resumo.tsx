@@ -7,7 +7,7 @@ precoMedio:number;
 
 export function ResumoLoja({mostrando,total,precoMedio}: Resumo){
     return (
-        <p>
+        <p className="resumo">
         Mostrando {mostrando} de {total} produtos · preço médio US${" "}
         {precoMedio.toFixed(2)}
       </p>

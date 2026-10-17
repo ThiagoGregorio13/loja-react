@@ -1,22 +1,40 @@
-import type {Product} from "./types"
+import type { Product } from "./types";
 import { Link } from "react-router";
 
-
 type ProdutoCardProps = {
-    produto:Product;
-      aoAdicionar: (produto: Product) => void;
-    
+  produto: Product;
+  aoAdicionar: (produto: Product) => void;
 };
 
-export function ProdutoCard({produto, aoAdicionar}: ProdutoCardProps){
-return (
-    <li>
-        <Link to = {`/produto/${produto.id}`}><h3>{produto.title}</h3></Link>  
-              <p>US$ {produto.price}</p>
-              <p>{produto.category}</p>
-              <p>Nota: {produto.rating}</p>
-              <p>{produto.stock === 0 ? "Esgotado" : `Estoque: ${produto.stock}`}</p>
-              <button onClick={() => aoAdicionar(produto)}>Adicionar</button>
+export function ProdutoCard({ produto, aoAdicionar }: ProdutoCardProps) {
+  return (
+    <li className="card">
+      <Link to={`/produto/${produto.id}`} className="card-imagem">
+        <img src={produto.thumbnail} alt={produto.title} />
+      </Link>
+
+      <div className="card-corpo">
+        <span className="categoria">{produto.category}</span>
+        <Link to={`/produto/${produto.id}`}>
+          <h3 className="card-titulo">{produto.title}</h3>
+        </Link>
+
+        <div className="card-info">
+          <span className="nota">★ {produto.rating}</span>
+          {produto.stock === 0 ? (
+            <span className="esgotado">Esgotado</span>
+          ) : (
+            <span className="estoque">Estoque: {produto.stock}</span>
+          )}
+        </div>
+
+        <div className="card-rodape">
+          <p className="preco">US$ {produto.price}</p>
+          <button className="botao" onClick={() => aoAdicionar(produto)}>
+            Adicionar
+          </button>
+        </div>
+      </div>
     </li>
-)
+  );
 }
