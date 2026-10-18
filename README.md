@@ -1,8 +1,10 @@
 # AXON Store
 
-A modern e-commerce front-end built with React and TypeScript, featuring a 3D product ring, physics-based animations and a persistent shopping cart, offering a light and easily accessible experience.
+A modern e-commerce front-end built with React and TypeScript, featuring a 3D product ring, physics-based animations and a persistent shopping cart, offering a lightweight and accessible experience.
 
 **🔗 Live demo:** [axonx-store.netlify.app](https://axonx-store.netlify.app/)
+![AXON Store screenshot](docs/screenshot.png)
+
 
 ## Features
 
