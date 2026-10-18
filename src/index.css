@@ -192,10 +192,15 @@ img {
   pointer-events: none;
 }
 
-.ring-hint {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #6e6e73;
+/* ".hero .ring-hint" (two classes) beats ".hero p" (class + tag) */
+.hero .ring-hint {
+  max-width: none;
+  margin: 12px auto 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 @media (max-width: 640px) {
@@ -270,29 +275,60 @@ img {
   transform: scale(0.97);
 }
 
+/* outlined pill that turns red on hover: "dangerous" action, but discreet */
 .button-remove {
-  border: none;
-  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 980px;
+  padding: 6px 14px;
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  background: none;
-  color: var(--accent);
+  background: transparent;
+  color: var(--text);
+  transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.1s;
 }
 
 .button-remove:hover {
-  text-decoration: underline;
+  color: #e30000;
+  border-color: #e30000;
+  background: rgba(227, 0, 0, 0.06);
 }
 
+.button-remove:active {
+  transform: scale(0.96);
+}
+
+/* gray pill; the arrow slides left on hover */
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin: 32px 0;
+  padding: 8px 16px 8px 12px;
+  border-radius: 980px;
   font-size: 14px;
-  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-h);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.back-link-arrow {
+  transition: transform 0.2s;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  background: #e8e8ed;
+}
+
+.back-link:hover .back-link-arrow {
+  transform: translateX(-3px);
+}
+
+.back-link:active {
+  transform: scale(0.97);
 }
 
 /* ===== Filters ===== */

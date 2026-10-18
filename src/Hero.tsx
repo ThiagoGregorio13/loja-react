@@ -36,6 +36,20 @@ export function Hero() {
         const onScroll = { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: true };
         gsap.to(".hero-text", { yPercent: -40, opacity: 0, ease: "none", scrollTrigger: onScroll });
         gsap.to(".hero-stage", { y: 140, rotationX: 30, scale: 0.85, ease: "none", scrollTrigger: onScroll });
+        // the hint fades out as soon as the user scrolls (or, on short screens,
+        // as soon as it has fully entered the screen) and only vanishes when the hero leaves the screen
+        gsap.to(".ring-hint", {
+          opacity: 0,
+          y: -10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".ring-hint",
+            start: "clamp(bottom bottom)", // clamp: never before scroll 0
+            endTrigger: heroRef.current, // the END is measured by the hero, not by the hint
+            end: "bottom top", // = when the bottom of the hero reaches the top of the screen
+            scrub: 1, // takes 1s to "catch up" with the scroll: smooths out wheel jumps
+          },
+        });
 
         return () => title.revert();
       });
@@ -130,7 +144,7 @@ export function Hero() {
             ))}
           </div>
         </div>
-        <p className="ring-hint">Drag to spin</p>
+        <p className="ring-hint">← Drag to spin →</p>
       </div>
     </section>
   );

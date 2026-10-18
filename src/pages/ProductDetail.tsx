@@ -51,7 +51,7 @@ export function ProductDetail() {
   return (
     <div ref={pageRef}>
       <Link to="/" className="back-link">
-        ← Back to store
+        <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
       </Link>
 
       <div className="detail-grid">

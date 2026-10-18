@@ -79,7 +79,7 @@ export function Cart() {
   return (
     <div className="cart" ref={pageRef}>
       <Link to="/" className="back-link">
-        ← Back to store
+        <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
       </Link>
 
       <h2>Cart</h2>
