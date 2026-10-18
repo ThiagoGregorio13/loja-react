@@ -6,8 +6,8 @@ export type Product = {
   stock: number;
   rating: number;
   brand?: string;
-description: string;  
- thumbnail: string; 
+  description: string;
+  thumbnail: string;
 };
 
 export type ApiResponse = {

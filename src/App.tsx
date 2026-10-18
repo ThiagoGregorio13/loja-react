@@ -1,38 +1,54 @@
-import { Loja } from "./pages/Loja";
-import { Routes, Route, Link } from "react-router";
-import { Carrinho } from "./pages/Carrinho";
-import { ProdutoDetalhe } from "./pages/ProdutoDetalhe";
-import { useCarrinho } from "./context/CarrinhoContext";
+import { useRef } from "react";
+import { Routes, Route, Link, useLocation } from "react-router";
+import { Store } from "./pages/Store";
+import { Cart } from "./pages/Cart";
+import { ProductDetail } from "./pages/ProductDetail";
+import { useCart } from "./context/CartContext";
+import { gsap, useGSAP, NO_REDUCED_MOTION } from "./animations/gsap";
 
 export default function App() {
-  const { carrinho } = useCarrinho();
-  const quantidadeNoCarrinho = carrinho.length;
-  const totalDoCarrinho = carrinho.reduce((acc, p) => acc + p.price, 0);
+  const { cart } = useCart();
+  const cartCount = cart.length;
+  const cartTotal = cart.reduce((acc, p) => acc + p.price, 0);
 
-return (
+  // page transition: scroll back to the top and fade the new page in
+  const { pathname } = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+  useGSAP(
+    () => {
+      window.scrollTo(0, 0);
+      const mm = gsap.matchMedia();
+      mm.add(NO_REDUCED_MOTION, () => {
+        gsap.from(mainRef.current!.children, { opacity: 0, y: 24, duration: 0.7, ease: "power3.out" });
+      });
+      return () => mm.revert();
+    },
+    { scope: mainRef, dependencies: [pathname] },
+  );
+
+  return (
     <div>
-      <header className="cabecalho">
-        <div className="cabecalho-conteudo">
+      <header className="site-header">
+        <div className="site-header-inner">
           <Link to="/" className="logo">
             AXON
           </Link>
-          <Link to="/carrinho" className="carrinho-link">
-            Carrinho · US$ {totalDoCarrinho.toFixed(2)}
-            <span className={quantidadeNoCarrinho > 0 ? "contador ativo" : "contador"}>
-              {quantidadeNoCarrinho}
+          <Link to="/cart" className="cart-link">
+            Cart · US$ {cartTotal.toFixed(2)}
+            <span data-cart-target className={cartCount > 0 ? "counter active" : "counter"}>
+              {cartCount}
             </span>
           </Link>
         </div>
       </header>
 
-      <main className="conteudo">
-      <Routes>
-        <Route path="/" element={<Loja />} />
-        <Route path="/carrinho" element={<Carrinho />} />
-        <Route path="/produto/:id" element={<ProdutoDetalhe />} />
-      </Routes>
+      <main className="content" ref={mainRef}>
+        <Routes>
+          <Route path="/" element={<Store />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+        </Routes>
       </main>
     </div>
-  )
-  
+  );
 }

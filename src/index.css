@@ -1,8 +1,8 @@
 /* =========================================================
-   AXON — identidade visual
-   Linguagem Apple: muito respiro, produto em destaque,
-   títulos fortes e botões em pílula. Abertura escura e
-   cinematográfica. Troque uma variável e o site muda.
+   AXON — visual identity
+   Apple-like language: lots of white space, product in focus,
+   bold headlines and pill buttons. Dark, cinematic hero.
+   Change one variable and the whole site changes.
    ========================================================= */
 :root {
   --bg: #f5f5f7;
@@ -66,14 +66,14 @@ img {
   outline-offset: 3px;
 }
 
-.conteudo {
+.content {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 22px 120px;
 }
 
-/* ===== Cabeçalho (translúcido, como o da Apple) ===== */
-.cabecalho {
+/* ===== Header (translucent, like Apple's) ===== */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 10;
@@ -81,7 +81,7 @@ img {
   backdrop-filter: saturate(180%) blur(20px);
 }
 
-.cabecalho-conteudo {
+.site-header-inner {
   max-width: var(--max);
   margin: 0 auto;
   height: 48px;
@@ -98,7 +98,7 @@ img {
   color: #f5f5f7;
 }
 
-.carrinho-link {
+.cart-link {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -107,11 +107,11 @@ img {
   transition: color 0.2s;
 }
 
-.carrinho-link:hover {
+.cart-link:hover {
   color: #fff;
 }
 
-.contador {
+.counter {
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
@@ -124,27 +124,110 @@ img {
   color: #fff;
 }
 
-.contador.ativo {
+.counter.active {
   background: var(--accent);
 }
 
-/* ===== Abertura cinematográfica (tela cheia, fundo preto) ===== */
+/* ===== Cinematic hero (full width, black background) ===== */
 .hero {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-bottom: 64px;
-  padding: 120px 22px 110px;
+  padding: 110px 22px 48px;
   background:
     radial-gradient(ellipse 60% 70% at 50% 120%, rgba(0, 113, 227, 0.35), transparent 70%),
     var(--dark);
   text-align: center;
+  overflow: hidden;
+}
+
+.hero-text {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
 }
 
-.hero .rotulo {
+/* ===== 3D product ring ===== */
+.hero-stage {
+  margin-top: 40px;
+}
+
+.ring-scene {
+  height: 340px;
+  display: grid;
+  place-items: center;
+  perspective: 1100px;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y; /* on phones, horizontal drag spins; vertical drag scrolls the page */
+}
+
+.ring-scene:active {
+  cursor: grabbing;
+}
+
+.ring {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  transform-style: preserve-3d;
+}
+
+.ring-item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff, #e9e9ee);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ring-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.ring-hint {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #6e6e73;
+}
+
+@media (max-width: 640px) {
+  .ring-scene {
+    height: 260px;
+    transform: scale(0.65);
+  }
+}
+
+/* ===== Elements created by the animations (flight and particles) ===== */
+.flyer {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  object-fit: contain;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.particle {
+  position: fixed;
+  z-index: 1001;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero .eyebrow {
   font-size: 19px;
   font-weight: 600;
   color: #f5f5f7;
@@ -165,8 +248,8 @@ img {
   color: var(--dark-text);
 }
 
-/* ===== Botões em pílula ===== */
-.botao {
+/* ===== Pill buttons ===== */
+.button {
   border: none;
   border-radius: 980px;
   padding: 8px 16px;
@@ -179,15 +262,15 @@ img {
   transition: background 0.2s, transform 0.1s;
 }
 
-.botao:hover {
+.button:hover {
   background: var(--accent-hover);
 }
 
-.botao:active {
+.button:active {
   transform: scale(0.97);
 }
 
-.botao-remover {
+.button-remove {
   border: none;
   padding: 0;
   font: inherit;
@@ -197,23 +280,23 @@ img {
   color: var(--accent);
 }
 
-.botao-remover:hover {
+.button-remove:hover {
   text-decoration: underline;
 }
 
-.voltar {
+.back-link {
   display: inline-block;
   margin: 32px 0;
   font-size: 14px;
   color: var(--accent);
 }
 
-.voltar:hover {
+.back-link:hover {
   text-decoration: underline;
 }
 
-/* ===== Filtros ===== */
-.filtros {
+/* ===== Filters ===== */
+.filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -221,8 +304,8 @@ img {
   margin-bottom: 16px;
 }
 
-.filtros input:not([type]),
-.filtros select {
+.filters input:not([type]),
+.filters select {
   font: inherit;
   font-size: 15px;
   padding: 11px 16px;
@@ -233,23 +316,23 @@ img {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.filtros input:not([type]) {
+.filters input:not([type]) {
   flex: 1;
   min-width: 220px;
 }
 
-.filtros input::placeholder {
+.filters input::placeholder {
   color: var(--muted);
 }
 
-.filtros input:focus,
-.filtros select:focus {
+.filters input:focus,
+.filters select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
 }
 
-.filtros label {
+.filters label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -257,26 +340,26 @@ img {
   cursor: pointer;
 }
 
-.filtros input[type="checkbox"] {
+.filters input[type="checkbox"] {
   accent-color: var(--accent);
   width: 16px;
   height: 16px;
 }
 
-.resumo {
+.summary {
   font-size: 14px;
   color: var(--muted);
   margin-bottom: 28px;
 }
 
-.mensagem {
+.message {
   padding: 96px 16px;
   text-align: center;
   color: var(--muted);
 }
 
-/* ===== Grade de produtos ===== */
-.grade-produtos {
+/* ===== Product grid ===== */
+.product-grid {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -286,48 +369,71 @@ img {
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--surface);
   border-radius: var(--radius);
   padding: 28px 24px 24px;
-  transition: transform 0.3s cubic-bezier(0, 0, 0.5, 1), box-shadow 0.3s;
+  transform-style: preserve-3d; /* children can "pop out" of the card in 3D */
+  will-change: transform;
+  transition: box-shadow 0.4s;
 }
 
 .card:hover {
-  transform: scale(1.015);
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
 }
 
-.card-imagem {
+/* light reflection that follows the mouse (--mx and --my come from useTilt3D) */
+.card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(0, 113, 227, 0.09),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.card:hover .card-glow,
+.detail-image:hover .card-glow {
+  opacity: 1;
+}
+
+.card-image {
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  transform: translateZ(40px); /* the photo sits "in front" of the card */
 }
 
-.card-imagem img {
+.card-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.card-corpo {
+.card-body {
   display: flex;
   flex-direction: column;
   gap: 4px;
   flex: 1;
 }
 
-.categoria {
+.category {
   font-size: 12px;
   font-weight: 600;
   color: #bf4800;
   text-transform: capitalize;
 }
 
-.card-titulo {
+.card-title {
   font-size: 19px;
   line-height: 1.25;
 }
@@ -339,11 +445,11 @@ img {
   color: var(--muted);
 }
 
-.esgotado {
+.sold-out {
   color: #bf4800;
 }
 
-.card-rodape {
+.card-footer {
   margin-top: auto;
   padding-top: 20px;
   display: flex;
@@ -352,21 +458,23 @@ img {
   gap: 8px;
 }
 
-.preco {
+.price {
   font-size: 15px;
   color: var(--text-h);
   font-variant-numeric: tabular-nums;
 }
 
-/* ===== Detalhe do produto ===== */
-.detalhe-grade {
+/* ===== Product detail ===== */
+.detail-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 56px;
   align-items: center;
 }
 
-.detalhe-imagem {
+.detail-image {
+  position: relative;
+  transform-style: preserve-3d;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -376,34 +484,34 @@ img {
   border-radius: var(--radius);
 }
 
-.detalhe-imagem img {
+.detail-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.detalhe-info {
+.detail-info {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.detalhe-info h2 {
+.detail-info h2 {
   font-size: clamp(32px, 4.4vw, 48px);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.035em;
 }
 
-.detalhe-info .preco {
+.detail-info .price {
   font-size: 21px;
 }
 
-.descricao {
+.description {
   line-height: 1.55;
 }
 
-.especificacoes {
+.specs {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -411,55 +519,56 @@ img {
   font-size: 15px;
 }
 
-.especificacoes li {
+.specs li {
   display: flex;
   justify-content: space-between;
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }
 
-.especificacoes span:last-child {
+.specs span:last-child {
   color: var(--text-h);
 }
 
-.detalhe-info .botao {
+.detail-info .button {
   align-self: flex-start;
   padding: 14px 28px;
   font-size: 17px;
 }
 
 @media (max-width: 820px) {
-  .detalhe-grade {
+  .detail-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
 
-  .detalhe-imagem {
+  .detail-image {
     padding: 32px;
   }
 }
 
-/* ===== Carrinho ===== */
-.carrinho {
+/* ===== Cart ===== */
+.cart {
   max-width: 820px;
   margin: 0 auto;
 }
 
-.carrinho h2 {
+.cart h2 {
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 700;
   letter-spacing: -0.035em;
   margin-bottom: 40px;
 }
 
-.carrinho-lista {
+.cart-list {
   list-style: none;
   padding: 0;
   margin: 0;
   border-top: 1px solid var(--border);
 }
 
-.carrinho-item {
+.cart-item {
+  overflow: hidden; /* so the height can "collapse" in the remove animation */
   display: flex;
   align-items: center;
   gap: 24px;
@@ -467,7 +576,7 @@ img {
   border-bottom: 1px solid var(--border);
 }
 
-.carrinho-item img {
+.cart-item img {
   width: 96px;
   height: 96px;
   object-fit: contain;
@@ -477,21 +586,21 @@ img {
   flex-shrink: 0;
 }
 
-.carrinho-item-nome {
+.cart-item-name {
   flex: 1;
   font-size: 19px;
   font-weight: 600;
   color: var(--text-h);
 }
 
-.carrinho-item-preco {
+.cart-item-price {
   font-size: 19px;
   font-weight: 600;
   color: var(--text-h);
   font-variant-numeric: tabular-nums;
 }
 
-.carrinho-vazio {
+.cart-empty {
   padding: 64px 0;
   font-size: 19px;
   color: var(--muted);
@@ -499,7 +608,7 @@ img {
   border-bottom: 1px solid var(--border);
 }
 
-.carrinho-total {
+.cart-total {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -509,7 +618,7 @@ img {
   color: var(--text-h);
 }
 
-.carrinho-total strong {
+.cart-total strong {
   font-size: 24px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -521,12 +630,12 @@ img {
     margin-bottom: 40px;
   }
 
-  .carrinho-item {
+  .cart-item {
     flex-wrap: wrap;
     gap: 12px 16px;
   }
 
-  .carrinho-item img {
+  .cart-item img {
     width: 72px;
     height: 72px;
   }
