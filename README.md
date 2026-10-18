@@ -34,8 +34,9 @@ A modern e-commerce front-end built with React and TypeScript, featuring a 3D pr
 
 ## Getting started
 
-you will need [Bun](https://bun.sh) installed.
+You will need [Bun](https://bun.sh) installed.
 
+```bash
 # clone the repository
 git clone https://github.com/ThiagoGregorio13/loja-react.git
 cd loja-react
@@ -58,6 +59,8 @@ src/
 ├── hooks/        # Data-fetching hooks (useProducts, useProduct, useCategories)
 ├── pages/        # Store, ProductDetail and Cart pages
 └── types.ts      # Shared TypeScript types
+```
+
 
 ## What I learned
 
