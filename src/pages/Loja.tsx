@@ -4,13 +4,8 @@ import { ResumoLoja } from "../Resumo";
 import { Filtros } from "../Filtros";
 import { useCategorias } from "../hooks/useCategorias";
 import { useProdutos } from "../hooks/useProdutos";
-import type { Product } from "../types";
 
-type LojaProp = {
-  aoAdicionar: (produto: Product) => void;
-};
-
-export function Loja({ aoAdicionar }: LojaProp) {
+export function Loja() {
   const [digitado, setDigitado] = useState("");
   const [categoria, setCategoria] = useState("");
   const [bemAvaliado, setBemAvaliado] = useState(false);
@@ -29,6 +24,12 @@ export function Loja({ aoAdicionar }: LojaProp) {
 
   return (
     <div>
+      <section className="hero">
+        <span className="rotulo">AXON</span>
+        <h1>Feito para durar.</h1>
+        <p>Uma seleção de produtos escolhidos pela qualidade. Nada além do essencial.</p>
+      </section>
+
       <Filtros
         digitado={digitado}
         aoDigitar={setDigitado}
@@ -47,7 +48,7 @@ export function Loja({ aoAdicionar }: LojaProp) {
       {!carregando && !erro && (
         <ul className="grade-produtos">
           {visiveis.map((p) => (
-            <ProdutoCard key={p.id} produto={p} aoAdicionar={aoAdicionar} />
+            <ProdutoCard key={p.id} produto={p} />
           ))}
         </ul>
       )}

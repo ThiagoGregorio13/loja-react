@@ -1,13 +1,9 @@
 import { Link } from "react-router";
-import type { Product } from "../types";
+import { useCarrinho } from "../context/CarrinhoContext";
 
-type CarrinhoProps = {
-  itens: Product[];
-  aoRemover: (posicao: number) => void;
-};
-
-export function Carrinho({ itens, aoRemover }: CarrinhoProps) {
-  const total = itens.reduce((acc, p) => acc + p.price, 0);
+export function Carrinho() {
+  const { carrinho, removerDoCarrinho } = useCarrinho();
+  const total = carrinho.reduce((acc, p) => acc + p.price, 0);
 
   return (
     <div className="carrinho">
@@ -17,16 +13,16 @@ export function Carrinho({ itens, aoRemover }: CarrinhoProps) {
 
       <h2>Carrinho</h2>
 
-      {itens.length === 0 ? (
-        <p className="carrinho-vazio">Seu carrinho está vazio 🛒</p>
+      {carrinho.length === 0 ? (
+        <p className="carrinho-vazio">Seu carrinho está vazio.</p>
       ) : (
         <ul className="carrinho-lista">
-          {itens.map((p, i) => (
+          {carrinho.map((p, i) => (
             <li key={i} className="carrinho-item">
               <img src={p.thumbnail} alt={p.title} />
               <span className="carrinho-item-nome">{p.title}</span>
               <span className="carrinho-item-preco">US$ {p.price}</span>
-              <button className="botao-remover" onClick={() => aoRemover(i)}>
+              <button className="botao-remover" onClick={() => removerDoCarrinho(i)}>
                 Remover
               </button>
             </li>

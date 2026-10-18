@@ -1,12 +1,14 @@
 import type { Product } from "./types";
 import { Link } from "react-router";
+import { useCarrinho } from "./context/CarrinhoContext";
 
 type ProdutoCardProps = {
   produto: Product;
-  aoAdicionar: (produto: Product) => void;
 };
 
-export function ProdutoCard({ produto, aoAdicionar }: ProdutoCardProps) {
+export function ProdutoCard({ produto }: ProdutoCardProps) {
+  const { adicionarAoCarrinho } = useCarrinho();
+
   return (
     <li className="card">
       <Link to={`/produto/${produto.id}`} className="card-imagem">
@@ -20,17 +22,17 @@ export function ProdutoCard({ produto, aoAdicionar }: ProdutoCardProps) {
         </Link>
 
         <div className="card-info">
-          <span className="nota">★ {produto.rating}</span>
+          <span>Nota {produto.rating}</span>
           {produto.stock === 0 ? (
             <span className="esgotado">Esgotado</span>
           ) : (
-            <span className="estoque">Estoque: {produto.stock}</span>
+            <span>{produto.stock} em estoque</span>
           )}
         </div>
 
         <div className="card-rodape">
           <p className="preco">US$ {produto.price}</p>
-          <button className="botao" onClick={() => aoAdicionar(produto)}>
+          <button className="botao" onClick={() => adicionarAoCarrinho(produto)}>
             Adicionar
           </button>
         </div>
