@@ -1,75 +1,71 @@
-# React + TypeScript + Vite
+# AXON Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce front-end built with React and TypeScript, featuring a 3D product ring, physics-based animations and a persistent shopping cart, offering a light and easily accessible experience.
 
-Currently, two official plugins are available:
+**🔗 Live demo:** [axonx-store.netlify.app](https://axonx-store.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Product catalog** with search, category filter based on your interests and reviews.
+- **Product detail page** with dynamic routes (`/product/:id`)
+- **Shopping cart** shared across the app with the Context API, based on your tastes
+- **Persistent cart** saved in `localStorage` (survives page reloads)
+- **Animations with GSAP:** making your experience relaxed
+  - Draggable 3D product ring with inertia
+  - 3D tilt cards that follow the mouse
+  - Products "fly" to the cart, with physics-based particles
+  - Scroll-triggered reveals and smooth page transitions
+- **Accessible motion:** all animations respect the `prefers-reduced-motion` setting
+- **Responsive** layout for desktop and mobile
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the ESLint configuration
+| Category | Tools |
+| --- | --- |
+| Framework | React 19, TypeScript |
+| Build tool | Vite, Bun |
+| Routing | React Router |
+| State | Context API, `localStorage` |
+| Animations | GSAP (ScrollTrigger, SplitText, Draggable, Inertia, Physics2D) |
+| Data | [DummyJSON API](https://dummyjson.com) |
+| Deploy | Netlify |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+you will need [Bun](https://bun.sh) installed.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# clone the repository
+git clone https://github.com/ThiagoGregorio13/loja-react.git
+cd loja-react
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# install dependencies
+bun install
 
+# start the dev server
+bun run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Then open http://localhost:5173 in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
 ```
+src/
+├── animations/   # GSAP setup and reusable animation hooks
+├── context/      # Cart context and provider
+├── hooks/        # Data-fetching hooks (useProducts, useProduct, useCategories)
+├── pages/        # Store, ProductDetail and Cart pages
+└── types.ts      # Shared TypeScript types
+
+## What I learned
+
+- **Custom hooks** to separate data fetching from the UI, with loading and error states
+- **Avoiding race conditions** in `useEffect` with an `ignore` flag in the cleanup function
+- **Removing prop drilling** by moving the cart into a Context with a custom `useCart()` hook
+- **Lazy initialization** of `useState` to read `localStorage` only once
+- **Client-side routing** with React Router, including dynamic params and the Netlify redirect needed for page reloads
+- **Animating React components** with GSAP's `useGSAP` hook, with proper cleanup
+
+## Author
+
+Made by **Thiago Gregorio** · [GitHub](https://github.com/ThiagoGregorio13)
