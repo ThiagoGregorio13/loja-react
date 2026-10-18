@@ -121,8 +121,7 @@ export function Hero() {
     <section className="hero" ref={heroRef}>
       <div className="hero-text">
         <span className="eyebrow">AXON</span>
-        <h1 ref={titleRef}>Less, but better.
-</h1>
+        <h1 ref={titleRef}>Made to matter.</h1>
         <p>A curated selection of products chosen for quality. Nothing but the essentials.</p>
       </div>
 
