@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
+import { TransitionLink } from "../components/TransitionLink";
 import { useProduct } from "../hooks/useProduct";
 import { useCart } from "../context/CartContext";
 import { gsap, useGSAP, NO_REDUCED_MOTION } from "../animations/gsap";
@@ -50,9 +51,9 @@ export function ProductDetail() {
 
   return (
     <div ref={pageRef}>
-      <Link to="/" className="back-link">
+      <TransitionLink to="/" className="back-link">
         <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
-      </Link>
+      </TransitionLink>
 
       <div className="detail-grid">
         <div className="detail-image" ref={showcaseRef}>

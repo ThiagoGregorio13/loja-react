@@ -148,48 +148,23 @@ img {
   gap: 16px;
 }
 
-/* ===== 3D product ring ===== */
+/* ===== 3D product ring (WebGL canvas, see HeroScene.tsx) ===== */
 .hero-stage {
-  margin-top: 40px;
+  margin-top: 8px;
 }
 
 .ring-scene {
-  height: 340px;
-  display: grid;
-  place-items: center;
-  perspective: 1100px;
+  height: 440px;
+}
+
+.hero-canvas {
+  height: 100%;
   cursor: grab;
-  user-select: none;
   touch-action: pan-y; /* on phones, horizontal drag spins; vertical drag scrolls the page */
 }
 
-.ring-scene:active {
+.hero-canvas:active {
   cursor: grabbing;
-}
-
-.ring {
-  position: relative;
-  width: 170px;
-  height: 170px;
-  transform-style: preserve-3d;
-}
-
-.ring-item {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 18px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, #ffffff, #e9e9ee);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-}
-
-.ring-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
 }
 
 /* ".hero .ring-hint" (two classes) beats ".hero p" (class + tag) */
@@ -205,8 +180,7 @@ img {
 
 @media (max-width: 640px) {
   .ring-scene {
-    height: 260px;
-    transform: scale(0.65);
+    height: 320px;
   }
 }
 
@@ -674,5 +648,109 @@ img {
   .cart-item img {
     width: 72px;
     height: 72px;
+  }
+}
+
+/* ===== Custom cursor (see Cursor.tsx) ===== */
+/* only hidden when Cursor.tsx detects a real mouse; text fields keep the normal cursor */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.has-custom-cursor input,
+.has-custom-cursor textarea {
+  cursor: text !important;
+}
+
+.cursor-dot,
+.cursor-bubble {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  pointer-events: none;
+  view-transition-name: cursor; /* stays out of the page "photo" during transitions */
+}
+
+.has-custom-cursor .cursor-dot,
+.has-custom-cursor .cursor-bubble {
+  display: grid;
+}
+
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference; /* white on dark backgrounds, black on light ones */
+  transition:
+    width 0.25s,
+    height 0.25s,
+    margin 0.25s;
+}
+
+.cursor-dot.is-hovering {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+}
+
+.cursor-bubble {
+  view-transition-name: cursor-bubble;
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ===== Page transitions (View Transitions API, see useTransitionNavigate.ts) ===== */
+/* the old page sinks back and darkens; the new one wipes in from the bottom */
+.site-header {
+  view-transition-name: site-header; /* the header stays still */
+}
+
+/* what shows behind the old page while it sinks */
+::view-transition {
+  background: var(--dark);
+}
+
+::view-transition-group(cursor),
+::view-transition-group(cursor-bubble) {
+  animation: none;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.8s cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.8s cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+@keyframes page-out {
+  to {
+    transform: scale(0.94);
+    opacity: 0.3;
+    filter: blur(4px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    clip-path: inset(100% 0 0 0 round 24px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
   }
 }

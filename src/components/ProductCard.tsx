@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import type { Product } from "../types";
-import { Link } from "react-router";
+import { TransitionLink } from "./TransitionLink";
 import { useCart } from "../context/CartContext";
 import { useTilt3D } from "../animations/useTilt3D";
 import { flyToCart } from "../animations/flyToCart";
@@ -23,15 +23,15 @@ export function ProductCard({ product }: ProductCardProps) {
     <li className="card" ref={cardRef}>
       <span className="card-glow" aria-hidden="true" />
 
-      <Link to={`/product/${product.id}`} className="card-image">
+      <TransitionLink to={`/product/${product.id}`} className="card-image" data-cursor="View">
         <img ref={imageRef} src={product.thumbnail} alt={product.title} />
-      </Link>
+      </TransitionLink>
 
       <div className="card-body">
         <span className="category">{product.category}</span>
-        <Link to={`/product/${product.id}`}>
+        <TransitionLink to={`/product/${product.id}`}>
           <h3 className="card-title">{product.title}</h3>
-        </Link>
+        </TransitionLink>
 
         <div className="card-info">
           <span>Rating {product.rating}</span>
