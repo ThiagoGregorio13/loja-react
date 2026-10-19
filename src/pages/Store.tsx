@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { ProductCard } from "../ProductCard";
-import { StoreSummary } from "../Summary";
-import { Filters } from "../Filters";
-import { Hero } from "../Hero";
+import { ProductCard } from "../components/ProductCard";
+import { StoreSummary } from "../components/StoreSummary";
+import { Filters } from "../components/Filters";
+import { Hero } from "../components/Hero";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
 import { gsap, useGSAP, ScrollTrigger, NO_REDUCED_MOTION } from "../animations/gsap";

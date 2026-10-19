@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router";
-import { gsap, useGSAP, SplitText, Draggable, NO_REDUCED_MOTION, prefersReducedMotion } from "./animations/gsap";
-import { useProducts } from "./hooks/useProducts";
+import { gsap, useGSAP, SplitText, Draggable, NO_REDUCED_MOTION, prefersReducedMotion } from "../animations/gsap";
+import { useProducts } from "../hooks/useProducts";
 
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
