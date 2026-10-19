@@ -1,19 +1,20 @@
-import { useRef } from "react";
-import { Link } from "react-router";
-import { gsap, useGSAP, SplitText, Draggable, NO_REDUCED_MOTION, prefersReducedMotion } from "../animations/gsap";
+import { lazy, Suspense, useRef } from "react";
+import { gsap, useGSAP, SplitText, NO_REDUCED_MOTION } from "../animations/gsap";
+import { useTransitionNavigate } from "../animations/useTransitionNavigate";
 import { useProducts } from "../hooks/useProducts";
+
+// Three.js is heavy: this import only happens when the Hero renders
+const HeroScene = lazy(() => import("./HeroScene"));
 
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const sceneRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const wasDragged = useRef(false);
+  const navigate = useTransitionNavigate();
 
   const { products } = useProducts("smartphones");
   const featured = products.slice(0, 10);
 
-  // 1) Intro: the title rises letter by letter; on scroll, the hero moves away
+  // Intro: the title rises letter by letter; on scroll, the hero moves away
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -35,7 +36,7 @@ export function Hero() {
 
         const onScroll = { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: true };
         gsap.to(".hero-text", { yPercent: -40, opacity: 0, ease: "none", scrollTrigger: onScroll });
-        gsap.to(".hero-stage", { y: 140, rotationX: 30, scale: 0.85, ease: "none", scrollTrigger: onScroll });
+        gsap.to(".hero-stage", { y: 140, scale: 0.85, ease: "none", scrollTrigger: onScroll });
         // the hint fades out as soon as the user scrolls (or, on short screens,
         // as soon as it has fully entered the screen) and only vanishes when the hero leaves the screen
         gsap.to(".ring-hint", {
@@ -58,65 +59,6 @@ export function Hero() {
     { scope: heroRef },
   );
 
-  // 2) 3D ring: spins on its own and can be dragged, with inertia (physics)
-  useGSAP(
-    () => {
-      const ring = ringRef.current;
-      const scene = sceneRef.current;
-      if (!ring || !scene || featured.length === 0) return;
-
-      const items = gsap.utils.toArray<HTMLElement>(".ring-item", ring);
-      const step = 360 / items.length;
-      const radius = Math.round(85 / Math.tan(Math.PI / items.length)) + 60;
-      items.forEach((item, i) => {
-        item.style.transform = `rotateY(${i * step}deg) translateZ(${radius}px)`;
-      });
-
-      const reduced = prefersReducedMotion();
-      const spin = () => gsap.to(ring, { rotationY: "-=360", duration: 45, ease: "none", repeat: -1 });
-      let spinning = reduced ? null : spin();
-      const resume = () => {
-        if (reduced) return;
-        spinning?.kill();
-        spinning = spin();
-      };
-
-      let startRotation = 0;
-      let startX = 0;
-      const followDrag = () => {
-        gsap.set(ring, { rotationY: startRotation + (drag.x - startX) * 0.35 });
-      };
-
-      const [drag] = Draggable.create(document.createElement("div"), {
-        type: "x",
-        trigger: scene,
-        inertia: true,
-        dragClickables: true,
-        onPress() {
-          spinning?.pause();
-          wasDragged.current = false;
-          startRotation = Number(gsap.getProperty(ring, "rotationY"));
-          startX = drag.x;
-        },
-        onDragStart() {
-          wasDragged.current = true;
-        },
-        onDrag: followDrag,
-        onThrowUpdate: followDrag,
-        onThrowComplete: resume,
-        onRelease() {
-          if (!drag.isThrowing) resume();
-        },
-      });
-
-      return () => {
-        drag.kill();
-        spinning?.kill();
-      };
-    },
-    { scope: heroRef, dependencies: [featured.length] },
-  );
-
   return (
     <section className="hero" ref={heroRef}>
       <div className="hero-text">
@@ -126,23 +68,12 @@ export function Hero() {
       </div>
 
       <div className="hero-stage">
-        <div className="ring-scene" ref={sceneRef}>
-          <div className="ring" ref={ringRef}>
-            {featured.map((p) => (
-              <Link
-                key={p.id}
-                to={`/product/${p.id}`}
-                className="ring-item"
-                draggable={false}
-                onClick={(e) => {
-                  // if it was a drag, don't open the product
-                  if (wasDragged.current) e.preventDefault();
-                }}
-              >
-                <img src={p.thumbnail} alt={p.title} draggable={false} />
-              </Link>
-            ))}
-          </div>
+        <div className="ring-scene">
+          {featured.length > 0 && (
+            <Suspense fallback={null}>
+              <HeroScene products={featured} onOpen={(id) => navigate(`/product/${id}`)} />
+            </Suspense>
+          )}
         </div>
         <p className="ring-hint">← Drag to spin →</p>
       </div>

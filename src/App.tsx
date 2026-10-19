@@ -1,48 +1,43 @@
-import { useRef } from "react";
-import { Routes, Route, Link, useLocation } from "react-router";
+import { useLayoutEffect } from "react";
+import { Routes, Route, useLocation } from "react-router";
 import { Store } from "./pages/Store";
 import { Cart } from "./pages/Cart";
 import { ProductDetail } from "./pages/ProductDetail";
 import { useCart } from "./context/CartContext";
-import { gsap, useGSAP, NO_REDUCED_MOTION } from "./animations/gsap";
+import { Cursor } from "./components/Cursor";
+import { TransitionLink } from "./components/TransitionLink";
 
 export default function App() {
   const { cart } = useCart();
   const cartCount = cart.length;
   const cartTotal = cart.reduce((acc, p) => acc + p.price, 0);
 
-  // page transition: scroll back to the top and fade the new page in
+  // a new page always starts at the top. useLayoutEffect runs BEFORE the browser paints,
+  // so the page transition "photographs" the new page already scrolled to the top
   const { pathname } = useLocation();
-  const mainRef = useRef<HTMLElement>(null);
-  useGSAP(
-    () => {
-      window.scrollTo(0, 0);
-      const mm = gsap.matchMedia();
-      mm.add(NO_REDUCED_MOTION, () => {
-        gsap.from(mainRef.current!.children, { opacity: 0, y: 24, duration: 0.7, ease: "power3.out" });
-      });
-      return () => mm.revert();
-    },
-    { scope: mainRef, dependencies: [pathname] },
-  );
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div>
+      <Cursor />
+
       <header className="site-header">
         <div className="site-header-inner">
-          <Link to="/" className="logo">
+          <TransitionLink to="/" className="logo">
             AXON
-          </Link>
-          <Link to="/cart" className="cart-link">
+          </TransitionLink>
+          <TransitionLink to="/cart" className="cart-link">
             Cart · US$ {cartTotal.toFixed(2)}
             <span data-cart-target className={cartCount > 0 ? "counter active" : "counter"}>
               {cartCount}
             </span>
-          </Link>
+          </TransitionLink>
         </div>
       </header>
 
-      <main className="content" ref={mainRef}>
+      <main className="content">
         <Routes>
           <Route path="/" element={<Store />} />
           <Route path="/cart" element={<Cart />} />

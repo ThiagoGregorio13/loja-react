@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router";
+import { TransitionLink } from "../components/TransitionLink";
 import { useCart } from "../context/CartContext";
 import { gsap, useGSAP, NO_REDUCED_MOTION, prefersReducedMotion } from "../animations/gsap";
 
@@ -78,9 +78,9 @@ export function Cart() {
 
   return (
     <div className="cart" ref={pageRef}>
-      <Link to="/" className="back-link">
+      <TransitionLink to="/" className="back-link">
         <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
-      </Link>
+      </TransitionLink>
 
       <h2>Cart</h2>
 
