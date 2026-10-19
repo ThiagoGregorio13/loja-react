@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import type { Product } from "./types";
+import type { Product } from "../types";
 import { Link } from "react-router";
-import { useCart } from "./context/CartContext";
-import { useTilt3D } from "./animations/useTilt3D";
-import { flyToCart } from "./animations/flyToCart";
+import { useCart } from "../context/CartContext";
+import { useTilt3D } from "../animations/useTilt3D";
+import { flyToCart } from "../animations/flyToCart";
 
 type ProductCardProps = {
   product: Product;
