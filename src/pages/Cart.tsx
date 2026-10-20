@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { TransitionLink } from "../components/TransitionLink";
 import { useCart } from "../context/CartContext";
 import { gsap, useGSAP, NO_REDUCED_MOTION, prefersReducedMotion } from "../animations/gsap";
+import { formatPrice } from "../utils/format";
 
 export function Cart() {
   const { cart, removeFromCart } = useCart();
@@ -45,7 +46,7 @@ export function Cart() {
         duration: prefersReducedMotion() ? 0 : 0.8,
         ease: "power2.out",
         onUpdate: () => {
-          el.textContent = `US$ ${counter.value.toFixed(2)}`;
+          el.textContent = `${formatPrice(counter.value)}`;
         },
       });
       previousTotal.current = total;
@@ -92,8 +93,8 @@ export function Cart() {
             <li key={i} className="cart-item">
               <img src={p.thumbnail} alt={p.title} />
               <span className="cart-item-name">{p.title}</span>
-              <span className="cart-item-price">US$ {p.price}</span>
-              <button
+              <span className="cart-item-price">{formatPrice(p.price)}</span>
+                            <button
                 className="button-remove"
                 onClick={(e) => handleRemove(i, e.currentTarget.closest("li")!)}
               >

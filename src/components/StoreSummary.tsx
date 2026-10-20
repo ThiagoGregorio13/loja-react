@@ -1,3 +1,5 @@
+import { formatPrice } from "../utils/format";
+
 type SummaryProps = {
   showing: number;
   total: number;
@@ -7,7 +9,7 @@ type SummaryProps = {
 export function StoreSummary({ showing, total, averagePrice }: SummaryProps) {
   return (
     <p className="summary">
-      Showing {showing} of {total} products · average price US$ {averagePrice.toFixed(2)}
+      Showing {showing} of {total} products · average price {formatPrice(averagePrice)}
     </p>
   );
 }
