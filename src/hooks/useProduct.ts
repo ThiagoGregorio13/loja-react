@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types";
+import {API_URL} from "../config"
+
 
 export function useProduct(id: string | undefined) {
   const [product, setProduct] = useState<Product | null>(null);
@@ -14,7 +16,7 @@ export function useProduct(id: string | undefined) {
       setError(null);
 
       try {
-        const response = await fetch(`https://dummyjson.com/products/${id}`);
+        const response = await fetch(`${API_URL}/products/${id}`);
         if (!response.ok) {
           throw new Error(`Error ${response.status} while fetching the product`);
         }

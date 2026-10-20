@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Product, ApiResponse } from "../types";
+import {API_URL} from "../config"
+
 
 export function useProducts(category: string) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,8 +19,8 @@ export function useProducts(category: string) {
       // the URL depends on the selected category
       const url =
         category === ""
-          ? "https://dummyjson.com/products?limit=0"
-          : `https://dummyjson.com/products/category/${category}`;
+          ? `${API_URL}/products?limit=0`
+          : `${API_URL}/products/category/${category}`;
 
       try {
         const response = await fetch(url);
