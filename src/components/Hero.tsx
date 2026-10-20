@@ -14,7 +14,7 @@ export function Hero() {
   const { products } = useProducts("smartphones");
   const featured = products.slice(0, 10);
 
-  // Intro: the title rises letter by letter; on scroll, the hero moves away
+  // Intro: the title rises letter by letter; on scroll, the text moves away (the ring stays still)
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -36,7 +36,6 @@ export function Hero() {
 
         const onScroll = { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: true };
         gsap.to(".hero-text", { yPercent: -40, opacity: 0, ease: "none", scrollTrigger: onScroll });
-        gsap.to(".hero-stage", { y: 140, scale: 0.85, ease: "none", scrollTrigger: onScroll });
         // the hint fades out as soon as the user scrolls (or, on short screens,
         // as soon as it has fully entered the screen) and only vanishes when the hero leaves the screen
         gsap.to(".ring-hint", {
