@@ -9,10 +9,8 @@ import { TransitionLink } from "./components/TransitionLink";
 import { formatPrice } from "./utils/format";
 
 export default function App() {
-  const { cart } = useCart();
+  const { cart, cartTotal } = useCart();
   const cartCount = cart.length;
-  const cartTotal = cart.reduce((acc, p) => acc + p.price, 0);
-
   // a new page always starts at the top. useLayoutEffect runs BEFORE the browser paints,
   // so the page transition "photographs" the new page already scrolled to the top
   const { pathname } = useLocation();

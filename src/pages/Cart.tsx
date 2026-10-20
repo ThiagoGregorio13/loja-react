@@ -5,8 +5,7 @@ import { gsap, useGSAP, NO_REDUCED_MOTION, prefersReducedMotion } from "../anima
 import { formatPrice } from "../utils/format";
 
 export function Cart() {
-  const { cart, removeFromCart } = useCart();
-  const total = cart.reduce((acc, p) => acc + p.price, 0);
+  const { cart, removeFromCart, cartTotal:total  } = useCart();
 
   const pageRef = useRef<HTMLDivElement>(null);
   const totalRef = useRef<HTMLElement>(null);
