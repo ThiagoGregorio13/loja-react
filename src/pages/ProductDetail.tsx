@@ -7,6 +7,7 @@ import { gsap, useGSAP, NO_REDUCED_MOTION } from "../animations/gsap";
 import { useTilt3D } from "../animations/useTilt3D";
 import { useMagnetic } from "../animations/useMagnetic";
 import { flyToCart } from "../animations/flyToCart";
+import { formatPrice } from "../utils/format";
 
 export function ProductDetail() {
   const { id } = useParams();
@@ -64,7 +65,7 @@ export function ProductDetail() {
         <div className="detail-info">
           <span className="category">{product.category}</span>
           <h2>{product.title}</h2>
-          <p className="price">US$ {product.price}</p>
+          <p className="price">{formatPrice(product.price)}</p>
           <p className="description">{product.description}</p>
 
           <ul className="specs">

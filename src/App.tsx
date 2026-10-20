@@ -6,6 +6,7 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { useCart } from "./context/CartContext";
 import { Cursor } from "./components/Cursor";
 import { TransitionLink } from "./components/TransitionLink";
+import { formatPrice } from "./utils/format";
 
 export default function App() {
   const { cart } = useCart();
@@ -29,7 +30,7 @@ export default function App() {
             AXON
           </TransitionLink>
           <TransitionLink to="/cart" className="cart-link">
-            Cart · US$ {cartTotal.toFixed(2)}
+            Cart · {formatPrice(cartTotal)}
             <span data-cart-target className={cartCount > 0 ? "counter active" : "counter"}>
               {cartCount}
             </span>

@@ -4,6 +4,7 @@ import { TransitionLink } from "./TransitionLink";
 import { useCart } from "../context/CartContext";
 import { useTilt3D } from "../animations/useTilt3D";
 import { flyToCart } from "../animations/flyToCart";
+import { formatPrice } from "../utils/format";
 
 type ProductCardProps = {
   product: Product;
@@ -43,7 +44,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="card-footer">
-          <p className="price">US$ {product.price}</p>
+          <p className="price">{formatPrice(product.price)}</p>
           <button className="button" onClick={handleAdd}>
             Add
           </button>

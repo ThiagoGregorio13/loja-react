@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {API_URL} from "../config"
 
 export function useCategories() {
   const [categories, setCategories] = useState<string[]>([]);
@@ -7,7 +8,7 @@ export function useCategories() {
   useEffect(() => {
     async function loadCategories() {
       try {
-        const response = await fetch("https://dummyjson.com/products/category-list");
+        const response = await fetch(`${API_URL}/products/category-list`);
         if (!response.ok) {
           throw new Error(`Error ${response.status} while fetching categories`);
         }
