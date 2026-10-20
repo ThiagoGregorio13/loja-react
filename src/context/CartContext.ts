@@ -5,6 +5,7 @@ type CartContextValue = {
   addToCart: (product: Product) => void;
   removeFromCart: (index: number) => void;
   cart: Product[];
+  cartTotal: number
 };
 
 export const CartContext = createContext<CartContextValue | null>(null);

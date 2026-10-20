@@ -7,12 +7,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Product[]>(() => {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
+
   });
 
   // save a copy every time the cart changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
+
   }, [cart]);
+
+      const cartTotal = cart.reduce((acc, p) => acc + p.price, 0);
 
   
   function addToCart(product: Product) {
@@ -24,7 +28,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <CartContext value={{ addToCart, removeFromCart, cart }}>
+    <CartContext value={{ addToCart, removeFromCart, cart, cartTotal}}>
       {children}
     </CartContext>
   );
