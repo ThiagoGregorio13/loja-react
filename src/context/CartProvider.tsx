@@ -14,12 +14,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  
   function addToCart(product: Product) {
-    setCart([...cart, product]);
+    setCart((current) => [...current, product]);
   }
 
   function removeFromCart(index: number) {
-    setCart(cart.filter((_, i) => i !== index));
+    setCart((current) => current.filter((_, i) => i !== index));
   }
 
   return (
