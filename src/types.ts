@@ -8,7 +8,10 @@ export type Product = {
   brand?: string;
   description: string;
   thumbnail: string;
+cartId: string;
 };
+
+export type itemCart = Product & {cartId: string};
 
 export type ApiResponse = {
   products: Product[];

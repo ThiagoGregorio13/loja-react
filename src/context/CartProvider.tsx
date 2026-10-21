@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import type { Product } from "../types";
 import { CartContext } from "./CartContext";
+import type { Product, itemCart } from "../types";
+
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   // read the saved cart only once, when the page opens (lazy initialization)
-  const [cart, setCart] = useState<Product[]>(() => {
+  const [cart, setCart] = useState<itemCart[]>(() => {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
 
@@ -20,11 +21,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   
   function addToCart(product: Product) {
-    setCart((current) => [...current, product]);
+    setCart((current) => [...current, {...product , cartId: crypto.randomUUID()}]);
   }
 
-  function removeFromCart(index: number) {
-    setCart((current) => current.filter((_, i) => i !== index));
+  function removeFromCart(cartId: string) {
+  setCart((current) => current.filter((item) => item.cartId !== cartId));
   }
 
   return (
