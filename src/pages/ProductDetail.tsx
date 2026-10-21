@@ -9,6 +9,7 @@ import { useMagnetic } from "../animations/useMagnetic";
 import { flyToCart } from "../animations/flyToCart";
 import { formatPrice } from "../utils/format";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { BackdropHandCoin } from "../components/BackdropDrawing";
 
 export function ProductDetail() {
   const { id } = useParams();
@@ -59,7 +60,9 @@ export function ProductDetail() {
   }
 
   return (
-    <div ref={pageRef}>
+    <div className="detail-page" ref={pageRef}>
+      <BackdropHandCoin key={product.id} />
+
       <TransitionLink to="/" className="back-link">
         <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
       </TransitionLink>

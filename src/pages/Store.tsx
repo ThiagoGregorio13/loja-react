@@ -3,6 +3,7 @@ import { ProductCard } from "../components/ProductCard";
 import { StoreSummary } from "../components/StoreSummary";
 import { Filters } from "../components/Filters";
 import { Hero } from "../components/Hero";
+import { BackdropCart } from "../components/BackdropDrawing";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
 import { gsap, useGSAP, ScrollTrigger, NO_REDUCED_MOTION } from "../animations/gsap";
@@ -79,11 +80,14 @@ export function Store() {
       {error && <p className="message">Error: {error}</p>}
 
       {!loading && !error && (
-        <ul className="product-grid">
-          {visible.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </ul>
+        <div className="catalog">
+          <BackdropCart />
+          <ul className="product-grid">
+            {visible.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

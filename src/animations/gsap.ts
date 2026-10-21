@@ -7,8 +7,10 @@ import { Draggable } from "gsap/Draggable";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { Physics2DPlugin } from "gsap/Physics2DPlugin";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
 gsap.registerPlugin(
+  DrawSVGPlugin,
   useGSAP,
   ScrollTrigger,
   SplitText,
