@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { TransitionLink } from "../components/TransitionLink";
 import { useProduct } from "../hooks/useProduct";
@@ -8,11 +8,19 @@ import { useTilt3D } from "../animations/useTilt3D";
 import { useMagnetic } from "../animations/useMagnetic";
 import { flyToCart } from "../animations/flyToCart";
 import { formatPrice } from "../utils/format";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 export function ProductDetail() {
   const { id } = useParams();
   const { product, loading, error } = useProduct(id);
   const { addToCart } = useCart();
+  const { addViewed } = useRecentlyViewed();
+
+  // every product that is opened goes to the "Recently viewed" list
+  useEffect(() => {
+    if (!product) return;
+    addViewed(product);
+  }, [product, addViewed]);
 
   // hooks always at the top, BEFORE the "if" statements that return
   const pageRef = useRef<HTMLDivElement>(null);
