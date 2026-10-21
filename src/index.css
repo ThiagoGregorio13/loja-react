@@ -442,6 +442,31 @@ img {
   aspect-ratio: 1;
 }
 
+/* cart page: a receipt with a "$", on the right, behind the list and the total */
+.cart {
+  position: relative;
+}
+
+.cart > :not(.backdrop) {
+  position: relative;
+  z-index: 1; /* everything on the page above the drawing */
+}
+
+.backdrop-receipt {
+  top: 0;
+  right: -16vw;
+  width: min(40vw, 460px);
+  aspect-ratio: 1;
+}
+
+@media (max-width: 820px) {
+  .backdrop-receipt {
+    top: 120px;
+    right: -10vw;
+    width: 80vw;
+  }
+}
+
 /* one column (photo on top, details below): the hand moves down, behind the details,
    otherwise it would be hidden behind the white photo card */
 @media (max-width: 820px) {
