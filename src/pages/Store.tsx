@@ -6,12 +6,15 @@ import { Hero } from "../components/Hero";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
 import { gsap, useGSAP, ScrollTrigger, NO_REDUCED_MOTION } from "../animations/gsap";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 export function Store() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [topRated, setTopRated] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
+
+  const { viewed } = useRecentlyViewed();
 
   const { categories } = useCategories();
   const { products, loading, error } = useProducts(category);
@@ -48,6 +51,17 @@ export function Store() {
   return (
     <div ref={pageRef}>
       <Hero />
+
+      {viewed.length > 0 && (
+        <section className="recently-viewed">
+          <h2>Recently viewed</h2>
+          <ul className="product-grid">
+            {viewed.map((p) => (
+<ProductCard key={p.id} product={p}/>
+))}
+          </ul>
+        </section>
+      )}
 
       <Filters
         search={search}

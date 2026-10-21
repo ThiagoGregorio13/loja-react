@@ -378,6 +378,16 @@ img {
   gap: 20px;
 }
 
+/* ===== Recently viewed (see useRecentlyViewed.ts) ===== */
+.recently-viewed {
+  margin-bottom: 64px;
+}
+
+.recently-viewed h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
 .card {
   position: relative;
   display: flex;
