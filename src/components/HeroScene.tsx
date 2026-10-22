@@ -96,7 +96,6 @@ export default function HeroScene({ products, onOpen }: HeroSceneProps) {
 
 function Ring({ products, onOpen }: HeroSceneProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const tiltRef = useRef<THREE.Group>(null);
   const gl = useThree((state) => state.gl);
   const radius = ((CARD + GAP) * products.length) / (2 * Math.PI);
 
@@ -147,16 +146,12 @@ function Ring({ products, onOpen }: HeroSceneProps) {
       groupRef.current!.rotation.y += d.velocity + (reduced ? 0 : spin.current * delta);
       d.velocity *= 0.94; // friction
     }
-    if (!reduced) {
-      // the whole ring leans a little towards the mouse
-      const tilt = tiltRef.current!;
-      tilt.rotation.x = THREE.MathUtils.lerp(tilt.rotation.x, -state.pointer.y * 0.12 + 0.08, 0.05);
-      tilt.rotation.z = THREE.MathUtils.lerp(tilt.rotation.z, state.pointer.x * 0.06, 0.05);
-    }
   });
 
+  // a small fixed tilt, so the ring is seen slightly from above. It does NOT follow the mouse:
+  // the ring only spins (by itself, or when dragged)
   return (
-    <group ref={tiltRef} position={[0, 0.35, 0]}>
+    <group position={[0, 0.35, 0]} rotation={[0.08, 0, 0]}>
       <group ref={groupRef}>
         {products.map((p, i) => (
           <Card
@@ -279,7 +274,7 @@ function Card({ product, angle, radius, onHover, onOpen }: CardProps) {
           fontSize={0.075}
           anchorX="right"
           anchorY="middle"
-          color="#a1a1a6"
+          color="#f472b6"
         >
           {formatPrice(product.price)}
         </Text>

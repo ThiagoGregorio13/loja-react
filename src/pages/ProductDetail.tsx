@@ -9,7 +9,8 @@ import { useMagnetic } from "../animations/useMagnetic";
 import { flyToCart } from "../animations/flyToCart";
 import { formatPrice } from "../utils/format";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-import { BackdropHandCoin } from "../components/BackdropDrawing";
+import { FloatingCoin } from "../components/Coin";
+import { FREE_SHIPPING_FROM, INSTALLMENTS, installmentPrice, originalPrice } from "../utils/pricing";
 
 export function ProductDetail() {
   const { id } = useParams();
@@ -53,6 +54,8 @@ export function ProductDetail() {
   if (error) return <p className="message">Error: {error}</p>;
   if (!product) return <p className="message">Product not found</p>;
 
+  const discount = Math.round(product.discountPercentage);
+
   function handleAdd() {
     if (!product) return;
     addToCart(product);
@@ -61,8 +64,6 @@ export function ProductDetail() {
 
   return (
     <div className="detail-page" ref={pageRef}>
-      <BackdropHandCoin key={product.id} />
-
       <TransitionLink to="/" className="back-link">
         <span className="back-link-arrow" aria-hidden="true">←</span> Back to store
       </TransitionLink>
@@ -71,23 +72,54 @@ export function ProductDetail() {
         <div className="detail-image" ref={showcaseRef}>
           <span className="card-glow" aria-hidden="true" />
           <img ref={imageRef} src={product.thumbnail} alt={product.title} />
+          {/* key: a new product = a new coin, so the fall plays again */}
+          <FloatingCoin key={product.id} />
         </div>
 
         <div className="detail-info">
           <span className="category">{product.category}</span>
           <h2>{product.title}</h2>
-          <p className="price">{formatPrice(product.price)}</p>
+          <div className="detail-pricing">
+            {discount > 0 && (
+              <span className="price-old">{formatPrice(originalPrice(product.price, product.discountPercentage))}</span>
+            )}
+            <p className="price">{formatPrice(product.price)}</p>
+            {discount > 0 && <span className="discount-badge">-{discount}%</span>}
+          </div>
+          <p className="installments">
+            or {INSTALLMENTS}x {formatPrice(installmentPrice(product.price))} interest-free
+          </p>
+          {product.price >= FREE_SHIPPING_FROM && <span className="free-shipping">Free shipping</span>}
+
           <p className="description">{product.description}</p>
 
           <ul className="specs">
+            {product.brand && (
+              <li>
+                <span>Brand</span>
+                <span>{product.brand}</span>
+              </li>
+            )}
             <li>
               <span>Rating</span>
-              <span>{product.rating} / 5</span>
+              <span>★ {product.rating} / 5</span>
             </li>
             <li>
               <span>Availability</span>
               <span>{product.stock === 0 ? "Sold out" : `${product.stock} in stock`}</span>
             </li>
+            {product.shippingInformation && (
+              <li>
+                <span>Shipping</span>
+                <span>{product.shippingInformation}</span>
+              </li>
+            )}
+            {product.warrantyInformation && (
+              <li>
+                <span>Warranty</span>
+                <span>{product.warrantyInformation}</span>
+              </li>
+            )}
           </ul>
 
           <button className="button" ref={buttonRef} onClick={handleAdd}>

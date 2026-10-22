@@ -61,7 +61,7 @@ function bounceCounter(target: HTMLElement) {
 // Real physics: each particle starts with a random velocity and angle,
 // and gravity pulls it down.
 function releaseParticles(r: DOMRect) {
-  const colors = ["#0071e3", "#1d1d1f", "#86868b"];
+  const colors = ["#7c3aed", "#ec4899", "#f97316", "#facc15"];
 
   for (let i = 0; i < 16; i++) {
     const p = document.createElement("span");

@@ -1,20 +1,24 @@
 /* =========================================================
    AXON — visual identity
-   Apple-like language: lots of white space, product in focus,
-   bold headlines and pill buttons. Dark, cinematic hero.
+   Clean layout (white space, product in focus, pill buttons)
+   with a vivid "sunset" gradient: violet → pink → orange.
    Change one variable and the whole site changes.
    ========================================================= */
 :root {
-  --bg: #f5f5f7;
+  --bg: #faf7ff; /* white with a hint of violet */
   --surface: #ffffff;
-  --text: #6e6e73;
-  --text-h: #1d1d1f;
-  --muted: #86868b;
-  --border: #d2d2d7;
-  --dark: #000000;
-  --dark-text: #a1a1a6;
-  --accent: #0071e3;
-  --accent-hover: #0077ed;
+  --text: #5b5670;
+  --text-h: #16121f;
+  --muted: #8a849c;
+  --border: #e4dcf2;
+  --dark: #0b0614; /* almost black, slightly violet */
+  --dark-text: #b9b1cc;
+  --violet: #7c3aed;
+  --pink: #ec4899;
+  --orange: #f97316;
+  --green: #16a34a;
+  --accent: var(--pink);
+  --gradient: linear-gradient(110deg, var(--violet), var(--pink) 50%, var(--orange));
 
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
   --radius: 18px;
@@ -66,6 +70,20 @@ img {
   outline-offset: 3px;
 }
 
+/* selected text */
+::selection {
+  background: var(--pink);
+  color: #fff;
+}
+
+/* text painted with the gradient: the background is "cut" in the shape of the letters */
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .content {
   max-width: var(--max);
   margin: 0 auto;
@@ -95,7 +113,10 @@ img {
   font-size: 17px;
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: #f5f5f7;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .cart-link {
@@ -125,7 +146,7 @@ img {
 }
 
 .counter.active {
-  background: var(--accent);
+  background: var(--gradient);
 }
 
 /* ===== Cinematic hero (full width, black background) ===== */
@@ -134,8 +155,11 @@ img {
   margin-left: calc(50% - 50vw);
   margin-bottom: 64px;
   padding: 110px 22px 48px;
+  /* three colored "lights" coming from the bottom: violet, pink and orange */
   background:
-    radial-gradient(ellipse 60% 70% at 50% 120%, rgba(0, 113, 227, 0.35), transparent 70%),
+    radial-gradient(ellipse 45% 60% at 10% 115%, rgba(124, 58, 237, 0.65), transparent 70%),
+    radial-gradient(ellipse 45% 60% at 50% 125%, rgba(236, 72, 153, 0.6), transparent 70%),
+    radial-gradient(ellipse 45% 60% at 90% 115%, rgba(249, 115, 22, 0.55), transparent 70%),
     var(--dark);
   text-align: center;
   overflow: hidden;
@@ -207,9 +231,15 @@ img {
 }
 
 .hero .eyebrow {
-  font-size: 19px;
-  font-weight: 600;
-  color: #f5f5f7;
+  padding: 6px 16px;
+  border-radius: 980px;
+  background: var(--gradient);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(236, 72, 153, 0.45);
 }
 
 .hero h1 {
@@ -218,6 +248,17 @@ img {
   line-height: 1;
   letter-spacing: -0.045em;
   color: #f5f5f7;
+}
+
+/* with the animations on, Hero.tsx paints each letter. Without them (reduce motion),
+   the title gets the gradient straight from the CSS */
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 {
+    background: linear-gradient(110deg, #a78bfa, #f472b6 50%, #fb923c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .hero p {
@@ -234,15 +275,19 @@ img {
   padding: 8px 16px;
   font: inherit;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   cursor: pointer;
-  background: var(--accent);
+  /* the gradient is twice as wide as the button; on hover it slides and shows the orange half */
+  background: var(--gradient);
+  background-size: 200% 100%;
   color: #fff;
-  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 6px 18px rgba(236, 72, 153, 0.3);
+  transition: background-position 0.4s, box-shadow 0.3s, transform 0.1s;
 }
 
 .button:hover {
-  background: var(--accent-hover);
+  background-position: 100% 0;
+  box-shadow: 0 8px 26px rgba(249, 115, 22, 0.4);
 }
 
 .button:active {
@@ -294,7 +339,8 @@ img {
 }
 
 .back-link:hover {
-  background: #e8e8ed;
+  border-color: var(--pink);
+  color: var(--pink);
 }
 
 .back-link:hover .back-link-arrow {
@@ -339,7 +385,7 @@ img {
 .filters select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+  box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2);
 }
 
 .filters label {
@@ -391,7 +437,7 @@ img {
 /* see-through cards, so the cart shows through them. Only the background is transparent:
    "opacity" would also fade the photo and the text */
 .catalog .card {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 /* ===== Backdrop drawings (see BackdropDrawing.tsx) ===== */
@@ -405,7 +451,8 @@ img {
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #f9e3a1; /* light pastel yellow */
+  /* the color is NOT set here: each drawing has its own gradient (colors prop in BackdropDrawing.tsx).
+     A "stroke" here would win over the stroke="url(#...)" attribute of the <svg> */
   /* in units of the 24x24 icon, not px: the line grows with the drawing.
      (vector-effect: non-scaling-stroke would break DrawSVG and turn the line into dots) */
   stroke-width: 0.6;
@@ -425,56 +472,252 @@ img {
   height: 76vh;
 }
 
-/* product page: a hand holding a coin, behind the details column */
-.detail-page {
+/* ===== Coins (see Coin.tsx) ===== */
+/* --coin = the size. Each place that uses a coin sets its own */
+.coin {
   position: relative;
+  width: var(--coin);
+  height: var(--coin);
+  transform-style: preserve-3d; /* the two faces live in 3D, back to back */
 }
 
-.detail-page .detail-grid {
-  position: relative;
-  z-index: 1;
+.coin-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  backface-visibility: hidden; /* a face turned away disappears, revealing the other one */
+  /* light coming from the top left = looks like shiny metal */
+  background: radial-gradient(
+    circle at 32% 28%,
+    var(--coin-shine) 0%,
+    var(--coin-light) 22%,
+    var(--coin-base) 60%,
+    var(--coin-dark) 100%
+  );
+  /* two inner rings = the rim of the coin */
+  box-shadow:
+    inset 0 0 0 calc(var(--coin) * 0.05) var(--coin-rim),
+    inset 0 0 0 calc(var(--coin) * 0.09) var(--coin-light);
+  color: var(--coin-text);
+  font-size: calc(var(--coin) * 0.5);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 calc(var(--coin) * 0.015) 0 var(--coin-text-shadow);
 }
 
-.backdrop-hand {
-  top: 40px;
-  right: -6vw;
-  width: min(48vw, 560px);
-  aspect-ratio: 1;
+.coin-back {
+  transform: rotateY(180deg);
 }
 
-/* cart page: a receipt with a "$", on the right, behind the list and the total */
+.coin-gold {
+  --coin-shine: #fff7cc;
+  --coin-light: #fcd34d;
+  --coin-base: #f59e0b;
+  --coin-dark: #b45309;
+  --coin-rim: #d97706;
+  --coin-text: #92400e;
+  --coin-text-shadow: #fde68a;
+}
+
+.coin-green {
+  --coin-shine: #f0fdf4;
+  --coin-light: #4ade80;
+  --coin-base: #16a34a;
+  --coin-dark: #052e16;
+  --coin-rim: #15803d;
+  --coin-text: #f0fdf4;
+  --coin-text-shadow: #14532d;
+}
+
+/* product page: the green coin sits on the bottom-left corner of the photo, half outside,
+   in the empty margin (no text there). translateZ: it pops out of the card when it tilts */
+.floating-coin {
+  --coin: clamp(130px, 15vw, 200px);
+  position: absolute;
+  left: calc(var(--coin) * -0.4);
+  bottom: calc(var(--coin) * -0.35);
+  z-index: 2;
+  pointer-events: none;
+  transform: translateZ(90px);
+  transform-style: preserve-3d;
+}
+
+/* green halo that "breathes" behind the coin */
+.floating-coin::before {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.7), rgba(34, 197, 94, 0.25) 45%, transparent 68%);
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+
+.floating-coin .coin {
+  filter: drop-shadow(0 20px 26px rgba(21, 128, 61, 0.55));
+}
+
+.floating-coin-bob {
+  transform-style: preserve-3d;
+}
+
+/* one column (photo on top, text below): the bottom-left corner would cover the title,
+   so the coin goes to the top-right corner of the photo */
+@media (max-width: 820px) {
+  .floating-coin {
+    --coin: 110px;
+    left: auto;
+    bottom: auto;
+    right: 12px;
+    top: calc(var(--coin) * -0.45);
+  }
+}
+
+/* ===== Receipt on the cart page (see Receipt.tsx) ===== */
 .cart {
   position: relative;
 }
 
-.cart > :not(.backdrop) {
-  position: relative;
-  z-index: 1; /* everything on the page above the drawing */
+/* wide screens: in the empty margin to the right of the list, fully on screen */
+.receipt {
+  --receipt: 220px;
+  position: absolute;
+  top: 110px;
+  right: calc(-1 * (var(--receipt) + 56px));
+  width: var(--receipt);
+  pointer-events: none;
+  transform: rotate(8deg);
 }
 
-.backdrop-receipt {
-  top: 0;
-  right: -16vw;
-  width: min(40vw, 460px);
-  aspect-ratio: 1;
+.receipt svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 24px 30px rgba(236, 72, 153, 0.45));
 }
 
-@media (max-width: 820px) {
-  .backdrop-receipt {
-    top: 120px;
-    right: -10vw;
-    width: 80vw;
+.receipt text {
+  font-family: var(--font);
+  fill: #fff;
+}
+
+.receipt-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.receipt-small {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.receipt-total {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.receipt-dash {
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  opacity: 0.7;
+}
+
+.receipt-line {
+  fill: #fff;
+  opacity: 0.8;
+}
+
+.receipt-bar {
+  fill: #fff;
+}
+
+/* no room on the sides: smaller, in the empty corner to the right of the "Cart" title */
+@media (max-width: 1400px) {
+  .receipt {
+    --receipt: 110px;
+    top: 8px;
+    right: 4px;
   }
 }
 
-/* one column (photo on top, details below): the hand moves down, behind the details,
-   otherwise it would be hidden behind the white photo card */
-@media (max-width: 820px) {
-  .backdrop-hand {
-    top: auto;
-    bottom: 0;
-    right: -12vw;
-    width: 90vw;
+/* ===== Sparkles around the coin and the receipt ===== */
+.sparkle {
+  position: absolute;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  /* a 4-point star */
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: twinkle 1.8s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) {
+  top: -8%;
+  right: 0;
+}
+
+.sparkle:nth-child(2) {
+  bottom: 10%;
+  left: -12%;
+  width: 12px;
+  height: 12px;
+  animation-delay: 0.6s;
+}
+
+.sparkle:nth-child(3) {
+  top: 40%;
+  right: -16%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 1.2s;
+}
+
+.floating-coin .sparkle {
+  background: #bbf7d0;
+}
+
+.receipt .sparkle {
+  background: var(--orange);
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(0.2) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(90deg);
+    opacity: 1;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle,
+  .floating-coin::before {
+    animation: none;
+  }
+
+  .sparkle {
+    opacity: 1;
   }
 }
 
@@ -501,7 +744,7 @@ img {
 }
 
 .card:hover {
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 24px 48px rgba(124, 58, 237, 0.18);
 }
 
 /* light reflection that follows the mouse (--mx and --my come from useTilt3D) */
@@ -512,7 +755,7 @@ img {
   pointer-events: none;
   background: radial-gradient(
     circle at var(--mx, 50%) var(--my, 50%),
-    rgba(0, 113, 227, 0.09),
+    rgba(236, 72, 153, 0.16),
     transparent 45%
   );
   opacity: 0;
@@ -549,7 +792,7 @@ img {
 .category {
   font-size: 12px;
   font-weight: 600;
-  color: #bf4800;
+  color: var(--violet);
   text-transform: capitalize;
 }
 
@@ -566,7 +809,61 @@ img {
 }
 
 .sold-out {
-  color: #bf4800;
+  color: var(--orange);
+}
+
+.rating {
+  color: #d97706;
+  font-weight: 600;
+}
+
+/* "-12%" sticker in the top-left corner of the card, popping out in 3D like the photo */
+.discount-badge {
+  padding: 4px 10px;
+  border-radius: 980px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.card .discount-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  transform: translateZ(60px) rotate(-6deg);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.35);
+}
+
+.free-shipping {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 980px;
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-pricing {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-old {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.installments {
+  font-size: 12px;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
 }
 
 .card-footer {
@@ -579,7 +876,8 @@ img {
 }
 
 .price {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: 700;
   color: var(--text-h);
   font-variant-numeric: tabular-nums;
 }
@@ -623,8 +921,30 @@ img {
   letter-spacing: -0.035em;
 }
 
+/* a grid column never gets narrower than its content by default ("min-width: auto"):
+   0 lets long texts wrap instead of pushing the page wider than the phone screen */
+.detail-grid > * {
+  min-width: 0;
+}
+
+.detail-pricing {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .detail-info .price {
-  font-size: 21px;
+  font-size: 34px;
+}
+
+.detail-info .price-old {
+  font-size: 17px;
+}
+
+.detail-info .installments {
+  margin-top: -10px; /* close to the price: it is part of it */
+  font-size: 15px;
 }
 
 .description {
@@ -739,9 +1059,13 @@ img {
 }
 
 .cart-total strong {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 @media (max-width: 560px) {
@@ -811,6 +1135,7 @@ img {
   width: 36px;
   height: 36px;
   margin: -18px 0 0 -18px;
+  color: var(--pink);
 }
 
 .cursor-bubble {
@@ -820,7 +1145,7 @@ img {
   margin: -38px 0 0 -38px;
   place-items: center;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--gradient);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -829,8 +1154,181 @@ img {
   visibility: hidden;
 }
 
+/* ===== Brand bands (see BrandMarquee.tsx) ===== */
+/* two bands from edge to edge, crossing in an X */
+.marquee {
+  position: relative;
+  width: 100vw;
+  height: 180px;
+  margin: -24px 0 64px calc(50% - 50vw);
+  overflow: hidden; /* the tilted bands are wider than the screen: cut what is left over */
+}
+
+.marquee-band {
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  width: 110%;
+  padding: 16px 0;
+  overflow: hidden;
+}
+
+.marquee-band-dark {
+  background: var(--dark);
+  transform: translateY(-50%) rotate(3deg);
+}
+
+.marquee-band-bright {
+  background: var(--gradient);
+  transform: translateY(-50%) rotate(-3deg);
+  box-shadow: 0 16px 40px rgba(236, 72, 153, 0.35);
+}
+
+/* the track holds the text twice; sliding -50% = exactly one copy, then it starts over */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-band-dark .marquee-track {
+  animation-duration: 40s;
+  animation-direction: reverse; /* the dark band goes the other way */
+}
+
+.marquee-track span {
+  display: flex;
+  align-items: center;
+  padding-left: 36px;
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.marquee-band-dark .marquee-track span {
+  color: var(--dark-text);
+}
+
+/* a star after EVERY item (including the last): both copies stay the same width */
+.marquee-track span::after {
+  content: "✦";
+  padding-left: 36px;
+  font-size: 0.7em;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee {
+    height: 140px;
+  }
+
+  .marquee-band {
+    padding: 12px 0;
+  }
+}
+
+/* ===== Perks (see Perks.tsx) ===== */
+.perks {
+  margin-bottom: 72px;
+}
+
+.perks h2 {
+  margin-bottom: 28px;
+  text-align: center;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+}
+
+.perks-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* no "transition: transform" here: GSAP animates the transform of .perk when it appears */
+.perk {
+  padding: 28px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.perk:hover {
+  border-color: var(--pink);
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);
+}
+
+.perk-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: var(--gradient);
+  box-shadow: 0 8px 20px rgba(236, 72, 153, 0.35);
+}
+
+.perk-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.perk h3 {
+  margin-bottom: 6px;
+  font-size: 19px;
+}
+
+.perk p {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* ===== The coin of the page transition (see rollCoin.ts) ===== */
+.page-coin {
+  --coin: clamp(110px, 14vw, 170px);
+  position: fixed;
+  left: 0;
+  bottom: 8vh;
+  z-index: 1500;
+  /* the look of the coin comes from .coin and .coin-gold (see "Coins" above) */
+  border-radius: 50%;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); /* shadow on the "floor" */
+  pointer-events: none;
+  visibility: hidden; /* GSAP shows it (autoAlpha) only while the page changes */
+  opacity: 0;
+  view-transition-name: page-coin; /* its own layer, above the "photos" of the pages */
+}
+
 /* ===== Page transitions (View Transitions API, see useTransitionNavigate.ts) ===== */
-/* the old page sinks back and darkens; the new one wipes in from the bottom */
+/* the old page sinks back and darkens; a rolling coin uncovers the new one from the left */
 .site-header {
   view-transition-name: site-header; /* the header stays still */
 }
@@ -845,12 +1343,33 @@ img {
   animation: none;
 }
 
-::view-transition-old(root) {
-  animation: page-out 0.8s cubic-bezier(0.7, 0, 0.2, 1) both;
+/* the coin is moved by GSAP, live: no automatic animation and no "photo" from before the change */
+::view-transition-group(page-coin),
+::view-transition-new(page-coin) {
+  animation: none;
 }
 
+::view-transition-old(page-coin) {
+  display: none;
+}
+
+/* "normal": one page simply covers the other (the default blend would mix their colors) */
+::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: page-in 0.8s cubic-bezier(0.7, 0, 0.2, 1) both;
+  mix-blend-mode: normal;
+}
+
+/* 1s: a bit longer than the coin (ROLL_DURATION = 0.9s), because the transition
+   only ends when this animation ends — the coin needs time to leave the screen */
+::view-transition-old(root) {
+  animation: page-out 1s cubic-bezier(0.45, 0, 0.55, 1) both;
+}
+
+/* the new page is visible from the left edge up to the center of the coin.
+   --reveal is updated by rollCoin.ts on every frame */
+::view-transition-new(root) {
+  animation: none;
+  clip-path: inset(0 max(0px, 100% - var(--reveal, 100%)) 0 0);
 }
 
 @keyframes page-out {
@@ -858,14 +1377,5 @@ img {
     transform: scale(0.94);
     opacity: 0.3;
     filter: blur(4px);
-  }
-}
-
-@keyframes page-in {
-  from {
-    clip-path: inset(100% 0 0 0 round 24px);
-  }
-  to {
-    clip-path: inset(0 0 0 0 round 0);
   }
 }

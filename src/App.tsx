@@ -6,6 +6,7 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { useCart } from "./context/CartContext";
 import { Cursor } from "./components/Cursor";
 import { TransitionLink } from "./components/TransitionLink";
+import { Coin } from "./components/Coin";
 import { formatPrice } from "./utils/format";
 
 export default function App() {
@@ -43,6 +44,9 @@ export default function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </main>
+
+      {/* hidden until a page transition rolls it across the screen (see rollCoin.ts) */}
+      <Coin className="coin-gold page-coin" />
     </div>
   );
 }

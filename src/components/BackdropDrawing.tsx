@@ -1,17 +1,21 @@
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { gsap, useGSAP, NO_REDUCED_MOTION } from "../animations/gsap";
 
 type BackdropDrawingProps = {
   children: React.ReactNode; // the shapes (<path>, <circle>) of a 24x24 icon
   className: string; // positions the drawing (see "Backdrop drawings" in index.css)
   drawOn: "scroll" | "load";
+  colors: string[]; // the line goes from the first color (top left) to the last (bottom right)
 };
 
 // A big line drawing behind the content, drawn stroke by stroke (DrawSVG plugin).
 // "scroll": tied to the scroll, scrolling back up "erases" it. "load": draws once when the page opens.
 // With "reduce motion" on, it simply shows up already drawn.
-export function BackdropDrawing({ children, className, drawOn }: BackdropDrawingProps) {
+export function BackdropDrawing({ children, className, drawOn, colors }: BackdropDrawingProps) {
   const ref = useRef<HTMLDivElement>(null);
+  // each drawing needs its OWN gradient id (there can be several on the page).
+  // useId creates a unique one; we keep only letters/numbers so it is safe inside url(#...)
+  const gradientId = "stroke-" + useId().replace(/[^a-zA-Z0-9]/g, "");
 
   useGSAP(
     () => {
@@ -38,7 +42,17 @@ export function BackdropDrawing({ children, className, drawOn }: BackdropDrawing
 
   return (
     <div className={`backdrop ${className}`} ref={ref} aria-hidden="true">
-      <svg viewBox="0 0 24 24">{children}</svg>
+      <svg viewBox="0 0 24 24" stroke={`url(#${gradientId})`}>
+        <defs>
+          {/* userSpaceOnUse: ONE gradient across the whole drawing (otherwise each shape gets its own) */}
+          <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="24" y2="24">
+            {colors.map((color, i) => (
+              <stop key={color} offset={i / Math.max(colors.length - 1, 1)} stopColor={color} />
+            ))}
+          </linearGradient>
+        </defs>
+        {children}
+      </svg>
     </div>
   );
 }
@@ -47,31 +61,10 @@ export function BackdropDrawing({ children, className, drawOn }: BackdropDrawing
 
 export function BackdropCart() {
   return (
-    <BackdropDrawing className="backdrop-cart" drawOn="scroll">
+    <BackdropDrawing className="backdrop-cart" drawOn="scroll" colors={["#7c3aed", "#ec4899", "#f97316"]}>
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
       <circle cx="8" cy="21" r="1" />
       <circle cx="19" cy="21" r="1" />
-    </BackdropDrawing>
-  );
-}
-
-export function BackdropHandCoin() {
-  return (
-    <BackdropDrawing className="backdrop-hand" drawOn="load">
-      <path d="m2 16 6 6" />
-      <path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" />
-      <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" />
-      <circle cx="16" cy="9" r="2.9" />
-    </BackdropDrawing>
-  );
-}
-
-export function BackdropReceipt() {
-  return (
-    <BackdropDrawing className="backdrop-receipt" drawOn="load">
-      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
-      <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
-      <path d="M12 17.5v-11" />
     </BackdropDrawing>
   );
 }

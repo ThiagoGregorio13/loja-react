@@ -5,6 +5,7 @@ import { useCart } from "../context/CartContext";
 import { useTilt3D } from "../animations/useTilt3D";
 import { flyToCart } from "../animations/flyToCart";
 import { formatPrice } from "../utils/format";
+import { FREE_SHIPPING_FROM, INSTALLMENTS, installmentPrice, originalPrice } from "../utils/pricing";
 
 type ProductCardProps = {
   product: Product;
@@ -15,6 +16,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const cardRef = useTilt3D<HTMLLIElement>(8);
   const imageRef = useRef<HTMLImageElement>(null);
 
+  const discount = Math.round(product.discountPercentage);
+
   function handleAdd() {
     addToCart(product);
     flyToCart(imageRef.current);
@@ -23,6 +26,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <li className="card" ref={cardRef}>
       <span className="card-glow" aria-hidden="true" />
+      {discount > 0 && <span className="discount-badge">-{discount}%</span>}
 
       <TransitionLink to={`/product/${product.id}`} className="card-image" data-cursor="View">
         <img ref={imageRef} src={product.thumbnail} alt={product.title} />
@@ -35,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </TransitionLink>
 
         <div className="card-info">
-          <span>Rating {product.rating}</span>
+          <span className="rating">★ {product.rating.toFixed(1)}</span>
           {product.stock === 0 ? (
             <span className="sold-out">Sold out</span>
           ) : (
@@ -43,8 +47,18 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
+        {product.price >= FREE_SHIPPING_FROM && <span className="free-shipping">Free shipping</span>}
+
         <div className="card-footer">
-          <p className="price">{formatPrice(product.price)}</p>
+          <div className="card-pricing">
+            {discount > 0 && (
+              <span className="price-old">{formatPrice(originalPrice(product.price, product.discountPercentage))}</span>
+            )}
+            <p className="price">{formatPrice(product.price)}</p>
+            <span className="installments">
+              or {INSTALLMENTS}x {formatPrice(installmentPrice(product.price))}
+            </span>
+          </div>
           <button className="button" onClick={handleAdd}>
             Add
           </button>
