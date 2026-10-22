@@ -7,7 +7,14 @@ import { gsap } from "./gsap";
 // travels its own circumference (π × diameter). So: degrees = distance / (π × diameter) × 360.
 export const ROLL_DURATION = 0.9; // seconds. In index.css, page-out lasts a bit longer (1s)
 
-export function rollCoin(transition: ViewTransition) {
+// only the two promises we use. Typing it as "ViewTransition" broke the build on Netlify:
+// the browser types and the React types each have their own ViewTransition, and they don't match
+type Transition = {
+  ready: Promise<void>;
+  finished: Promise<void>;
+};
+
+export function rollCoin(transition: Transition) {
   const coin = document.querySelector<HTMLElement>(".page-coin");
   const root = document.documentElement;
   if (!coin) return;
