@@ -3,6 +3,8 @@ import { ProductCard } from "../components/ProductCard";
 import { StoreSummary } from "../components/StoreSummary";
 import { Filters } from "../components/Filters";
 import { Hero } from "../components/Hero";
+import { BrandMarquee } from "../components/BrandMarquee";
+import { Perks } from "../components/Perks";
 import { BackdropCart } from "../components/BackdropDrawing";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
@@ -49,9 +51,32 @@ export function Store() {
     { scope: pageRef, dependencies: [visibleIds], revertOnUpdate: true },
   );
 
+  // the perks pop in one after another when the section enters the screen.
+  // Separate from the cards above: the perks never change, so they animate only once
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(NO_REDUCED_MOTION, () => {
+        gsap.from(".perk", {
+          opacity: 0,
+          y: 50,
+          scale: 0.92,
+          duration: 0.8,
+          ease: "back.out(1.6)",
+          stagger: 0.1,
+          scrollTrigger: { trigger: ".perks-grid", start: "top 85%", once: true },
+        });
+      });
+      return () => mm.revert();
+    },
+    { scope: pageRef },
+  );
+
   return (
     <div ref={pageRef}>
       <Hero />
+      <BrandMarquee />
+      <Perks />
 
       {viewed.length > 0 && (
         <section className="recently-viewed">

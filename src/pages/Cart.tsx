@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { TransitionLink } from "../components/TransitionLink";
-import { BackdropReceipt } from "../components/BackdropDrawing";
+import { Receipt } from "../components/Receipt";
 import { useCart } from "../context/CartContext";
 import {
   gsap,
@@ -79,7 +79,7 @@ export function Cart() {
 
   return (
     <div className="cart" ref={pageRef}>
-      <BackdropReceipt />
+      <Receipt total={total} count={cart.length} />
       <TransitionLink to="/" className="back-link">
         <span className="back-link-arrow" aria-hidden="true">
           ←

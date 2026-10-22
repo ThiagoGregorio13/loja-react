@@ -3,11 +3,14 @@ export type Product = {
   title: string;
   category: string;
   price: number;
+  discountPercentage: number;
   stock: number;
   rating: number;
   brand?: string;
   description: string;
   thumbnail: string;
+  warrantyInformation?: string;
+  shippingInformation?: string;
 cartId: string;
 };
 

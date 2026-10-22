@@ -21,6 +21,13 @@ export function Hero() {
       mm.add(NO_REDUCED_MOTION, () => {
         const title = SplitText.create(titleRef.current, { type: "words,chars", mask: "words" });
 
+        // each letter gets one color of the gradient: violet → pink → orange.
+        // interpolate(array) returns a function: 0 = first color, 1 = last, 0.5 = the one in the middle
+        const paint = gsap.utils.interpolate(["#a78bfa", "#f472b6", "#fb923c"]);
+        title.chars.forEach((char, i) => {
+          (char as HTMLElement).style.color = paint(i / (title.chars.length - 1));
+        });
+
         gsap
           .timeline({ defaults: { ease: "power4.out" } })
           .from(title.chars, {
@@ -61,7 +68,7 @@ export function Hero() {
   return (
     <section className="hero" ref={heroRef}>
       <div className="hero-text">
-        <span className="eyebrow">AXON</span>
+        <span className="eyebrow">New season · up to 25% off</span>
         <h1 ref={titleRef}>Made to matter.</h1>
         <p>A curated selection of products chosen for quality. Nothing but the essentials.</p>
       </div>
