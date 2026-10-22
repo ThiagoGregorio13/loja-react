@@ -119,17 +119,42 @@ img {
   color: transparent;
 }
 
+/* a gradient pill with a cart icon: easy to spot as "this is the cart" */
 .cart-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
-  color: #e8e8ed;
-  transition: color 0.2s;
+  padding: 6px 8px 6px 12px;
+  border-radius: 980px;
+  background: var(--gradient);
+  background-size: 200% 100%;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
+  transition: background-position 0.4s, box-shadow 0.3s;
 }
 
 .cart-link:hover {
-  color: #fff;
+  background-position: 100% 0;
+  box-shadow: 0 6px 22px rgba(249, 115, 22, 0.45);
+}
+
+.cart-link-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* inside the pill, the counter is white with dark text (gradient on gradient would disappear) */
+.cart-link .counter,
+.cart-link .counter.active {
+  background: #fff;
+  color: var(--text-h);
 }
 
 .counter {
@@ -1026,11 +1051,28 @@ img {
   flex-shrink: 0;
 }
 
+.cart-item-image {
+  flex-shrink: 0;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cart-item-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(236, 72, 153, 0.25);
+}
+
+/* the name is a link: pink on hover, so it is clear it can be clicked */
 .cart-item-name {
   flex: 1;
   font-size: 19px;
   font-weight: 600;
   color: var(--text-h);
+  transition: color 0.2s;
+}
+
+.cart-item-name:hover {
+  color: var(--pink);
 }
 
 .cart-item-price {

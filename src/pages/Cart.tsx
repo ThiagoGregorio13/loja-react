@@ -95,8 +95,13 @@ export function Cart() {
         <ul className="cart-list">
           {cart.map((p) => (
             <li key={p.cartId} className="cart-item">
-              <img src={p.thumbnail} alt={p.title} />
-              <span className="cart-item-name">{p.title}</span>
+              {/* the photo and the name go back to the product page */}
+              <TransitionLink to={`/product/${p.id}`} className="cart-item-image" data-cursor="View">
+                <img src={p.thumbnail} alt={p.title} />
+              </TransitionLink>
+              <TransitionLink to={`/product/${p.id}`} className="cart-item-name">
+                {p.title}
+              </TransitionLink>
               <span className="cart-item-price">{formatPrice(p.price)}</span>
               <button
                 className="button-remove"
